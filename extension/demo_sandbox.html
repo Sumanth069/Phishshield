@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>PhishShield AI — Interactive Demo Sandbox</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    }
+    body {
+      background-color: #f1f5f9;
+      color: #1e293b;
+      padding: 20px;
+    }
+    .top-bar {
+      max-width: 940px;
+      margin: 0 auto 14px auto;
+      background: #0f172a;
+      color: white;
+      padding: 14px 20px;
+      border-radius: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+      flex-wrap: wrap;
+      gap: 12px;
+      position: relative;
+      z-index: 1000;
+    }
+    .top-bar h1 {
+      font-size: 15px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .scenario-buttons {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      position: relative;
+      z-index: 1001;
+    }
+    .scenario-btn {
+      padding: 8px 14px;
+      border: 1px solid #334155;
+      background: #1e293b;
+      color: #cbd5e1;
+      font-size: 12px;
+      font-weight: 600;
+      border-radius: 6px;
+      cursor: pointer;
+      user-select: none;
+      pointer-events: auto;
+      transition: all 0.15s ease;
+    }
+    .scenario-btn:hover {
+      background: #334155;
+      color: white;
+    }
+    .scenario-btn.active {
+      background: #2563eb;
+      border-color: #3b82f6;
+      color: white;
+      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.4);
+    }
+    .scenario-btn.highlight {
+      border-color: #ef4444;
+      color: #fca5a5;
+    }
+    .scenario-btn.highlight.active {
+      background: #dc2626;
+      border-color: #ef4444;
+      color: white;
+      box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.4);
+    }
+    .instruction-bar {
+      max-width: 940px;
+      margin: 0 auto 14px auto;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 8px;
+      padding: 10px 16px;
+      font-size: 12px;
+      color: #1e40af;
+      line-height: 1.45;
+    }
+    .mail-client-window {
+      max-width: 940px;
+      margin: 0 auto;
+      background: #ffffff;
+      border-radius: 10px;
+      border: 1px solid #cbd5e1;
+      box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05);
+      overflow: hidden;
+    }
+    .mail-header {
+      padding: 20px 24px 16px 24px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .mail-subject {
+      font-size: 18px;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 12px;
+    }
+    .mail-sender-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .sender-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #e2e8f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: #475569;
+      font-size: 13px;
+    }
+    .sender-details {
+      font-size: 13px;
+    }
+    .sender-name {
+      font-weight: 700;
+      color: #0f172a;
+    }
+    .sender-email {
+      color: #64748b;
+      font-size: 12px;
+    }
+    .mail-date {
+      font-size: 12px;
+      color: #94a3b8;
+    }
+    .mail-body-container {
+      padding: 24px;
+      min-height: 240px;
+      font-size: 14px;
+      line-height: 1.6;
+      color: #334155;
+    }
+    .mail-body-container a {
+      color: #2563eb;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+    .attachments-area {
+      padding: 16px 24px;
+      background: #f8fafc;
+      border-top: 1px solid #e2e8f0;
+      font-size: 12.5px;
+    }
+    .attachment-card {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: white;
+      border: 1px solid #cbd5e1;
+      padding: 8px 14px;
+      border-radius: 6px;
+      margin-top: 6px;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="top-bar">
+    <h1>🛡️ PhishShield AI — Interactive Defense Sandbox</h1>
+    <div class="scenario-buttons">
+      <button class="scenario-btn active" id="btn-scen-1">1. Safe Email</button>
+      <button class="scenario-btn" id="btn-scen-2">2. Display-Name Spoof (BEC)</button>
+      <button class="scenario-btn" id="btn-scen-3">3. Credential Harvester</button>
+      <button class="scenario-btn highlight" id="btn-scen-4">🚨 4. Quishing (QR Attack)</button>
+    </div>
+  </div>
+
+  <div class="instruction-bar">
+    <div>
+      <b>💡 Testing Instructions:</b> Click between Scenarios 1–4 above. 
+      Click <b>"▼ Details"</b> on the banner to view forensic points and export SOC JSON reports. 
+      Click the link in Scenario 3 or the QR Code in Scenario 4 to test the <b>Safe Click Interceptor</b>!
+    </div>
+  </div>
+
+  <div class="mail-client-window">
+    <div class="mail-header">
+      <div class="mail-subject" id="sandbox-subject">[Security Alert] Personal Access Token Created</div>
+      <div class="mail-sender-row">
+        <div class="sender-info">
+          <div class="avatar" id="sandbox-avatar">GH</div>
+          <div class="sender-details">
+            <span class="sender-name" id="sandbox-sender-name">GitHub Security</span>
+            <span class="sender-email" id="sandbox-sender" email="notifications@github.com">&lt;notifications@github.com&gt;</span>
+          </div>
+        </div>
+        <div class="mail-date">Today at 10:14 AM</div>
+      </div>
+    </div>
+
+    <!-- The extension injects its Shadow DOM Banner right before this body container -->
+    <div class="mail-body-container" id="sandbox-email-body">
+      <p>Hi Developer,</p><br/>
+      <p>A new personal access token (classic) was recently generated on your GitHub account with <code>repo</code> and <code>workflow</code> scopes.</p><br/>
+      <p>If you made this change, no action is required.</p>
+      <p>If you did not generate this token, please visit your account settings to revoke it immediately:</p><br/>
+      <p><a href="https://github.com/settings/tokens">https://github.com/settings/tokens</a></p><br/>
+      <p>Thanks,<br/>The GitHub Team</p>
+    </div>
+
+    <div class="attachments-area" id="sandbox-attachments" style="display: none;">
+      <div style="font-weight: 600; color: #475569; font-size: 11.5px;">ATTACHMENTS</div>
+      <div class="attachment-card" id="sandbox-attachment-name">
+        <span>📄</span>
+        <span class="attachment-item"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts loaded as external files strictly compliant with Manifest V3 CSP -->
+  <script src="styles.js"></script>
+  <script src="click_guard.js"></script>
+  <script src="content.js"></script>
+  <script src="sandbox.js"></script>
+</body>
+</html>

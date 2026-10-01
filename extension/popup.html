@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>PhishShield AI</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="popup-header">
+    <div class="header-title">
+      <span class="shield-icon">🛡️</span>
+      <div>
+        <div class="brand">PhishShield AI</div>
+        <div class="tagline">Gmail Real-Time Defense</div>
+      </div>
+    </div>
+    <div id="status-pill" class="status-pill status-online">ONLINE</div>
+  </div>
+
+  <div class="gauge-card">
+    <div class="gauge-circle" id="gauge-circle">
+      <div class="gauge-inner">
+        <span class="score-number" id="score-num">--</span>
+        <span class="score-label">/ 100</span>
+      </div>
+    </div>
+    <div class="verdict-title" id="verdict-text">No Email Selected</div>
+    <div class="header-provider-tag" id="provider-tag">Provider: Idle</div>
+  </div>
+
+  <div class="section-title">Indicators of Compromise (IOCs)</div>
+  <div class="breakdown-card" id="breakdown-list">
+    <div class="empty-state">Open an email in Gmail or launch the Demo Sandbox to inspect signals.</div>
+  </div>
+
+  <div class="actions-card">
+    <button class="btn btn-secondary" id="btn-allowlist">⭐ Mark Domain as Safe</button>
+    <button class="btn btn-primary" id="btn-sandbox">🧪 Open Demo Sandbox</button>
+  </div>
+
+  <div class="footer-bar">
+    <label class="toggle-container">
+      <input type="checkbox" id="local-mode-toggle">
+      <span class="slider"></span>
+      <span class="toggle-label">Local-Only Mode (Zero Telemetry)</span>
+    </label>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
