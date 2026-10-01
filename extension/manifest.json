@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "PhishShield AI - Gmail Phishing Defense",
-  "version": "1.3.0",
-  "description": "Real-time Gmail phishing and credential theft defense. Detects lookalike domains, display-name spoofing, and intercepts dangerous links.",
+  "version": "1.4.0",
+  "description": "Real-time Gmail phishing and Quishing defense. Detects lookalike domains, QR codes, display-name spoofing, and intercepts dangerous links.",
   "permissions": [
     "activeTab",
     "storage",
@@ -11,7 +11,8 @@
   "host_permissions": [
     "https://mail.google.com/*",
     "http://127.0.0.1:8000/*",
-    "http://localhost:8000/*"
+    "http://localhost:8000/*",
+    "https://*/*"
   ],
   "background": {
     "service_worker": "background.js"

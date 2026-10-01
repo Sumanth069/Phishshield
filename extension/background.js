@@ -6,7 +6,15 @@
  * - Offline / Local-Only Mode fallback engine
  */
 
-const BACKEND_URL = "http://127.0.0.1:8000";
+const DEFAULT_BACKEND_URL = "http://127.0.0.1:8000";
+
+async function getBackendUrl() {
+  return new Promise((resolve) => {
+    chrome.storage.local.get(["backendUrl"], (res) => {
+      resolve(res.backendUrl || DEFAULT_BACKEND_URL);
+    });
+  });
+}
 
 // ----------------- HeaderProvider Architecture -----------------
 
@@ -239,9 +247,10 @@ async function handleAnalyzeEmail(payload) {
 
   // Step 3: Attempt dispatch to FastAPI Microservice
   try {
+    const backendUrl = await getBackendUrl();
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 3500); // 3.5s SLA timeout
-    const res = await fetch(`${BACKEND_URL}/api/v1/analyze`, {
+    const res = await fetch(`${backendUrl}/api/v1/analyze`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(fullPayload),
